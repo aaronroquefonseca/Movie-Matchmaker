@@ -102,7 +102,6 @@ dist
 
 # vuepress v2.x temp and cache directory
 .temp
-.cache
 
 # vitepress build output
 **/.vitepress/dist
@@ -150,4 +149,17 @@ __pycache__/
 .DS_Store
 Thumbs.db
 
+
+node_modules
+dist-ssr
+*.local
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
 .idea
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
