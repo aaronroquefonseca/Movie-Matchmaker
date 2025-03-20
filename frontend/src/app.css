@@ -1,25 +1,23 @@
-#app {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+body {
+  background: #1b1e25;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.preact:hover {
-  filter: drop-shadow(0 0 2em #673ab8aa);
+nav {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
 }
 
-.card {
-  padding: 2em;
+nav div {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
 }
 
-.read-the-docs {
-  color: #888;
+nav button {
+  border: none;
+  background-image: linear-gradient(to right, #9b36ff, #5618ff);
+  padding: 4px 8px;
 }
