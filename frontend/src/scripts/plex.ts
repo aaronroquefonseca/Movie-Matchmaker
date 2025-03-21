@@ -98,7 +98,7 @@ export async function getOauth(clientId: string): Promise<string> {
         const { id, code } = await createPin(clientId);
         if (id && code) {
             const plexOauth = 'https://app.plex.tv/auth#?' + qs.stringify({
-                clientId: clientId,
+                clientID: clientId,
                 code: code,
                 forwardUrl: webAppUrl + '/plex',
                 context: {
