@@ -44,7 +44,7 @@ async function createPlexPin(clientIdentifier: string) {
  * 
  * @returns {Promise<string | null | ''>} 
  *  - The username if successful (or `'User'` if empty).  
- *  - `''` if the token is invalid (401).  
+ *  - `''` if the token is invalid (401). The token should be removed.  
  *  - `null` if an error occurs (e.g., network issue, server error).  
  * @throws {Error} If the request is malformed (400) or an unexpected error occurs.  
  */
