@@ -1,25 +1,55 @@
-body {
+#app {
   background: #1b1e25;
   height: 100dvh;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
 
+main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  max-width: 1640px;
 }
 
 nav {
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
   align-items: center;
+  justify-content: center;
+  margin: 0 24px;
+}
+
+nav h1 {
+  font-size: 3rem;
+
 }
 
 nav div {
   display: flex;
+  width: 100%;
+  max-width: 1640px;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.nav-items {
+  display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: center;
+  justify-content: end;
 }
 
 nav button {
   border: none;
-  background-image: linear-gradient(to right, #9b36ff, #5618ff);
-  padding: 4px 8px;
+  background-image: linear-gradient(to bottom, #9b36ff, #5618ff);
+  padding: 16px 24px;
+  color: white;
+  margin: 0 4px;
+  font-size: 1.2rem;
+  border-radius: 12px;
+  font-weight: bold;
 }
