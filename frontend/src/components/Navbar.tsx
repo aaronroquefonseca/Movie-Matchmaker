@@ -17,7 +17,7 @@ export const Navbar = () => {
         }
 
         if (!hasPlex) {
-            plex.getOauth(user.clientId).then((url) => {
+            plex.getOauth(localStorage.getItem("clientId") || '').then((url) => { // TODO: Fix this, get from user type and never request with ''
                 setPlexOauth(url);
             }).catch((error) => {
                 console.error('Error getting Plex OAuth:', error);
