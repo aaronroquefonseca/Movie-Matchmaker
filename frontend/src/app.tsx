@@ -7,7 +7,9 @@ import {User} from "./types/userTypes.ts";
 const UserContext = createContext<any>(null);
 
 export const App = () => {
-    const [user, setUser] = useState<User|null>(null);
+    const [user, setUser] = useState<User>({
+        clientId: ""
+    });
 
     return <UserContext.Provider value={{user, setUser}}>
         <Navbar />

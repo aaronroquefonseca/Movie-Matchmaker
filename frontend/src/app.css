@@ -53,3 +53,7 @@ nav button {
   border-radius: 12px;
   font-weight: bold;
 }
+
+nav button:hover {
+  filter: brightness(80%);
+}
