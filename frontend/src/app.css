@@ -21,17 +21,22 @@ nav {
   align-items: center;
   justify-content: center;
   margin: 0 24px;
+  padding: 8px 0;
+  width: 100%;
+  max-width: 1240px;
+  border-bottom: 2px solid #3c404c;
 }
 
 nav h1 {
-  font-size: 3rem;
-
+  font-size: 2rem;
+  justify-self: start;
+  margin: 0;
 }
 
 nav div {
   display: flex;
   width: 100%;
-  max-width: 1640px;
+  max-width: 1240px;
   align-items: center;
   justify-content: space-between;
 }
@@ -46,10 +51,10 @@ nav div {
 nav button {
   border: none;
   background-image: linear-gradient(to bottom, #9b36ff, #5618ff);
-  padding: 16px 24px;
+  padding: 12px 18px;
   color: white;
   margin: 0 4px;
-  font-size: 1.2rem;
+  font-size: 1rem;
   border-radius: 12px;
   font-weight: bold;
 }
