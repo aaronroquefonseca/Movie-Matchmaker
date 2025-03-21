@@ -38,8 +38,17 @@ async function createPlexPin(clientIdentifier: string) {
 
 
 
-
-export async function getPlexUser(clientIdentifier: string, userToken: string): Promise<string> {
+/**
+ * Fetches the Plex username for a given user token.
+ * Useful for verifying the token and getting the username.
+ * 
+ * @returns {Promise<string | null | ''>} 
+ *  - The username if successful (or `'User'` if empty).  
+ *  - `''` if the token is invalid (401).  
+ *  - `null` if an error occurs (e.g., network issue, server error).  
+ * @throws {Error} If the request is malformed (400) or an unexpected error occurs.  
+ */
+export async function getPlexUser(clientIdentifier: string, userToken: string): Promise<string | null | ''> {
     const plexEndpoint = plexApiURL + '/user';
   
     try {
@@ -52,13 +61,29 @@ export async function getPlexUser(clientIdentifier: string, userToken: string): 
         },
       });
   
-      // Return the response data
-      return response.data;            // TODO: Return only the username, not the whole response, if error code return ''.
-    } catch (error) {
-      console.error('Error fetching Plex user data:', error);
-      throw error;
+      if (response.status === 200) {
+        const username = response.data.username || 'User';
+        return username;
+      }
+      console.error('HTTP status code not 200:', response.status);
+      return null;
+
+    } catch (error: any) {
+        if (error.response) {
+            const status = error.response.status;
+
+            if (status === 401) {
+                console.log('Plex token is not valid anymore.');
+                return '';
+            } else if (status === 400) {
+                console.error('Malformed request. Missing required parameters.');
+                throw error;
+            }
+        }
+        console.error('Error fetching Plex user data:', error);
+        throw error;
     }
-  }
+}
 
 
 export async function getPlexOauth(clientId: string): Promise<string> {
@@ -100,7 +125,7 @@ export async function getPlexToken(clientId: string, pinId: string, pinCode: str
                 code: pinCode,
             },
         });
-        
+
         return response.data
     } catch (error) {
         console.error('Error getting Plex token:', error);
