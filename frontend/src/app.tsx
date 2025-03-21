@@ -15,6 +15,21 @@ export const App = () => {
     });
 
     useEffect(() => {
+        if (window.location.pathname === '/plex') {
+            window.history.replaceState({}, '', '/');
+            plex.getToken(localStorage.getItem("clientId") || '', localStorage.getItem("plexPinId") || '', localStorage.getItem("plexPinCode") || '').then((token) => {  // TODO: Fix this, get from user type and never request with ''
+                if (typeof token === 'string') {
+                    localStorage.setItem('plexToken', token);
+                    setUser(prevState => ({
+                        ...prevState,
+                        plexToken: token
+                    }));
+                }
+            }).catch((error) => {
+                console.error('Error fetching Plex token:', error);
+            });
+        }
+
         let storedClientId = localStorage.getItem("clientId");
         
         // If no clientId exists, generate one and store it

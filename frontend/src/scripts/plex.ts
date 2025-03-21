@@ -97,6 +97,8 @@ export async function getOauth(clientId: string): Promise<string> {
     try{
         const { id, code } = await createPin(clientId);
         if (id && code) {
+            localStorage.setItem('plexPinId', id);      // TODO: Change this to cookies
+            localStorage.setItem('plexPinCode', code);
             const plexOauth = 'https://app.plex.tv/auth#?' + qs.stringify({
                 clientID: clientId,
                 code: code,
