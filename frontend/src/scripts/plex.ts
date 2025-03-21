@@ -38,7 +38,7 @@ async function createPlexPin(clientIdentifier: string) {
 
 
 
-export async function getPlexUser(clientIdentifier: string, userToken: string) {
+export async function getPlexUser(clientIdentifier: string, userToken: string): Promise<string> {
     const PLEX_API_URL = 'https://plex.tv/api/v2/user';
   
     try {
@@ -52,11 +52,12 @@ export async function getPlexUser(clientIdentifier: string, userToken: string) {
       });
   
       // Return the response data
-      return response.data;
+      return response.data;            // TODO: Return only the username, not the whole response, if error code return ''.
     } catch (error) {
       console.error('Error fetching Plex user data:', error);
       throw error;
     }
+    return '';
   }
 
 
