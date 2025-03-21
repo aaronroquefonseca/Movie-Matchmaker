@@ -88,7 +88,8 @@ export async function getPlexOauth(clientId: string): Promise<string> {
 
 
 export async function getPlexToken(clientId: string, pinId: string, pinCode: string): Promise<string | null> {
-    plexEndpoint = plexApiURL + '/pins/' + pinId;
+    const plexEndpoint = plexApiURL + '/pins/' + pinId;
+    
     try {
         const response = await axios.get(plexEndpoint, {
             headers: {
