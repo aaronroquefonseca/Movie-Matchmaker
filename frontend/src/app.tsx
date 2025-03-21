@@ -15,6 +15,18 @@ export const App = () => {
     });
 
     useEffect(() => {
+
+        if (window.location.pathname.startsWith('/plex')){
+            window.history.replaceState(null, '', '/');
+
+            if (!!user.plexPinId && !!user.plexPinCode)
+                plex.getToken(user.clientId, user.plexPinId, user.plexPinCode)
+                    .then(r => !!r && setUser({
+                        ...user,
+                        plexToken: r
+                    }));
+        }
+
         if (user.plexToken) {
             plex.getUser(user.clientId, user.plexToken).then((username) => {
                 if (username) {
