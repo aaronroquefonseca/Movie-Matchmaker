@@ -11,44 +11,54 @@ export const UserContext = createContext<any>(null);
 
 export const App = () => {
     const [user, setUser] = useState<User>({
-        clientId: ""
+        clientId: uuidv4()
     });
 
     useEffect(() => {
-        let storedClientId = localStorage.getItem("clientId");
-        
-        // If no clientId exists, generate one and store it
-        if (!storedClientId) {
-            storedClientId = uuidv4();  // Generate a new UUID
-            localStorage.setItem("clientId", storedClientId);  // Save it to localStorage
-        }
-        
-        // Update the state with the clientId
-        setUser(prevState => ({
-            ...prevState,
-            clientId: storedClientId
-        }));
-
-        // Check if plexToken exists in localStorage
-        const storedPlexToken = localStorage.getItem("plexToken");
-
-        if (storedPlexToken) {
-            plex.getUser(storedClientId, storedPlexToken).then((username) => {
+        if (user.plexToken) {
+            plex.getUser(user.clientId, user.plexToken).then((username) => {
                 if (username) {
                     console.log('Plex user:', username);
-                    setUser(prevState => ({
-                        ...prevState,
-                        plexToken: storedPlexToken,
-                        username: username
-                    }));
+                    setUser({
+                        ...user,
+                        username
+                    });
                 } else if (username === '') {
-                    localStorage.removeItem("plexToken");
+                    setUser({
+                        ...user,
+                        plexToken: undefined
+                    })
                 }
             }).catch((error) => {
                 console.error('Error fetching Plex user:', error);
             });
         }
     }, []);
+
+    useEffect(() => {
+        let clientIdStored = localStorage.getItem("clientId");
+
+        if(!clientIdStored || clientIdStored != user.clientId) {
+            localStorage.setItem("clientId", user.clientId);
+        }
+
+        let plexTokenStored = localStorage.getItem("plexToken");
+
+        if(!user.plexToken && !!plexTokenStored){
+            setUser({
+                ...user,
+                plexToken: plexTokenStored
+            });
+        }
+
+        if(!plexTokenStored || plexTokenStored != user.plexToken) {
+            if (user.plexToken != null) {
+                localStorage.setItem("plexToken", user.plexToken);
+            }
+        }
+
+
+    }, [user]);
 
     return <UserContext.Provider value={{user, setUser}}>
         <Navbar />

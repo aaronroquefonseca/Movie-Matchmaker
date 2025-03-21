@@ -23,7 +23,7 @@ async function createPin(clientIdentifier: string) {
       });
   
       // Extract the relevant fields from the response
-      const { id, code } = response.data;
+      const { id, code }: any = response.data;
   
       // Return the extracted fields
       return { id, code };

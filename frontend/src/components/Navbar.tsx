@@ -5,8 +5,8 @@ import * as plex from "../scripts/plex.ts";
 export const Navbar = () => {
 
     const {user, setUser} = useContext(UserContext);
-    const [hasPlex, setHasPlex] = useState<boolean>(false);
-    const [hasJellyfin, setHasJellyfin] = useState<boolean>(false);
+    const [hasPlex, setHasPlex] = useState<boolean>(!!user.plexToken);
+    const [hasJellyfin, setHasJellyfin] = useState<boolean>(!!user.jellyfinKey);
     const [plexOauth, setPlexOauth] = useState<string>('');
 
     useEffect(() => {
@@ -17,7 +17,7 @@ export const Navbar = () => {
         }
 
         if (!hasPlex) {
-            plex.getOauth(localStorage.getItem("clientId") || '').then((url) => { // TODO: Fix this, get from user type and never request with ''
+            plex.getOauth(user.clientId || '').then((url) => { // TODO: Fix this, get from user type and never request with ''
                 setPlexOauth(url);
             }).catch((error) => {
                 console.error('Error getting Plex OAuth:', error);
@@ -29,8 +29,7 @@ export const Navbar = () => {
 
     const logoutPlex = () => {
         setHasPlex(false);
-        localStorage.removeItem("plexToken");
-        user.plexToken = '';
+        user.plexToken = undefined;
     }
 
     const logoutJellyfin = () => {
