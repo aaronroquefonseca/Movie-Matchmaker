@@ -60,7 +60,7 @@ export async function getPlexUser(clientIdentifier: string, userToken: string) {
   }
 
 
-export async function getPlexOauth(clientId: string): string {
+export async function getPlexOauth(clientId: string): Promise<string> {
     try{
         const { id, code } = await createPlexPin(clientId);
         if (id && code) {
@@ -80,4 +80,5 @@ export async function getPlexOauth(clientId: string): string {
         console.error('Error getting Plex OAuth:', error);
         throw error;
     }
+    return '';
 }
