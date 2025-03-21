@@ -6,5 +6,6 @@ export type User = {
     plexToken?: string;     // storage, no expiration, plex will revoke over time
     jellyfinKey?: string;
     // guestId?: string;       // session exclusive, don't store
+    username?: string;       // session exclusive, don't store
     sessionId?: string;     // session exclusive, don't store
 }

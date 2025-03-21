@@ -38,7 +38,8 @@ export const App = () => {
                     console.log('Plex user:', username);
                     setUser(prevState => ({
                         ...prevState,
-                        plexToken: storedPlexToken
+                        plexToken: storedPlexToken,
+                        username: username
                     }));
                 } else if (username === '') {
                     localStorage.removeItem("plexToken");
