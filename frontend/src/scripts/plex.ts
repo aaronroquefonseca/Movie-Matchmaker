@@ -12,14 +12,13 @@ async function createPin(clientIdentifier: string) {
   
     try {
       // Send the POST request with required headers and data
-      const response = await axios.post(plexEndpoint, null, {
+      const response = await axios.post(plexEndpoint, new URLSearchParams({
+            'strong': 'true',
+            'X-Plex-Product': product,
+            'X-Plex-Client-Identifier': clientIdentifier,
+        }).toString(), {
         headers: {
           'Accept': 'application/json',
-          'X-Plex-Product': product,  // Your app name
-          'X-Plex-Client-Identifier': clientIdentifier,  // Client identifier
-        },
-        params: {
-          'strong': 'true',  // Form data 'strong=true'
         },
       });
   
