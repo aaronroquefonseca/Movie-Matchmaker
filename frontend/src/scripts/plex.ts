@@ -3,15 +3,16 @@ import * as qs from 'qs';
 
 
 const product = 'Movie Matchmaker';
+const plexApiURL = 'https://plex.tv/api/v2';
 const webAppUrl = window.location.href;
 
 
 async function createPlexPin(clientIdentifier: string) {
-    const PLEX_API_URL = 'https://plex.tv/api/v2/pins';
+    const plexEndpoint = plexApiURL + '/pins';
   
     try {
       // Send the POST request with required headers and data
-      const response = await axios.post(PLEX_API_URL, null, {
+      const response = await axios.post(plexEndpoint, null, {
         headers: {
           'Accept': 'application/json',
           'X-Plex-Product': product,  // Your app name
@@ -39,10 +40,10 @@ async function createPlexPin(clientIdentifier: string) {
 
 
 export async function getPlexUser(clientIdentifier: string, userToken: string): Promise<string> {
-    const PLEX_API_URL = 'https://plex.tv/api/v2/user';
+    const plexEndpoint = plexApiURL + '/user';
   
     try {
-      const response = await axios.get(PLEX_API_URL, {
+      const response = await axios.get(plexEndpoint, {
         headers: {
           'Accept': 'application/json',
           'X-Plex-Product': product,  // Your app name
@@ -57,7 +58,6 @@ export async function getPlexUser(clientIdentifier: string, userToken: string): 
       console.error('Error fetching Plex user data:', error);
       throw error;
     }
-    return '';
   }
 
 
@@ -76,10 +76,33 @@ export async function getPlexOauth(clientId: string): Promise<string> {
                 },
             });
             return plexOauth;
+        } else {
+            console.error('Error creating Plex pin:', id, code);
+            return '';
         }
     } catch (error) {
         console.error('Error getting Plex OAuth:', error);
         throw error;
     }
-    return '';
+}
+
+
+export async function getPlexToken(clientId: string, pinId: string, pinCode: string): Promise<string | null> {
+    plexEndpoint = plexApiURL + '/pins/' + pinId;
+    try {
+        const response = await axios.get(plexEndpoint, {
+            headers: {
+                'Accept': 'application/json',
+                'X-Plex-Client-Identifier': clientId,
+            },
+            params: {
+                code: pinCode,
+            },
+        });
+        
+        return response.data
+    } catch (error) {
+        console.error('Error getting Plex token:', error);
+        throw error;
+    }
 }
