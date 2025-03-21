@@ -1,7 +1,8 @@
 
 export type User = {
-    plexId?: string;
-    jellyfinId?: string;
-    guessId?: string;
+    clientId?: string;
+    plexKey?: string;
+    jellyfinKey?: string;
+    guestId?: string;
     sessionId?: string;
 }
