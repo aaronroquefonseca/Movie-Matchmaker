@@ -7,7 +7,7 @@ const plexApiURL = 'https://plex.tv/api/v2';
 const webAppUrl = window.location.href;
 
 
-async function createPlexPin(clientIdentifier: string) {
+async function createPin(clientIdentifier: string) {
     const plexEndpoint = plexApiURL + '/pins';
   
     try {
@@ -48,7 +48,7 @@ async function createPlexPin(clientIdentifier: string) {
  *  - `null` if an error occurs (e.g., network issue, server error).  
  * @throws {Error} If the request is malformed (400) or an unexpected error occurs.  
  */
-export async function getPlexUser(clientIdentifier: string, userToken: string): Promise<string | null | ''> {
+export async function getUser(clientIdentifier: string, userToken: string): Promise<string | null | ''> {
     const plexEndpoint = plexApiURL + '/user';
   
     try {
@@ -94,9 +94,9 @@ export async function getPlexUser(clientIdentifier: string, userToken: string): 
  *  - `''` if the PIN creation fails.  
  * @throws {Error} If an unexpected error occurs during the process.  
  */
-export async function getPlexOauth(clientId: string): Promise<string> {
+export async function getOauth(clientId: string): Promise<string> {
     try{
-        const { id, code } = await createPlexPin(clientId);
+        const { id, code } = await createPin(clientId);
         if (id && code) {
             const plexOauth = 'https://app.plex.tv/auth#?' + qs.stringify({
                 clientId: clientId,
@@ -127,7 +127,7 @@ export async function getPlexOauth(clientId: string): Promise<string> {
  *  - `null` if the PIN hasn't been authorized yet.
  * @throws {Error} If an unexpected error occurs during the process.  
  */
-export async function getPlexToken(clientId: string, pinId: string, pinCode: string): Promise<string | null> {
+export async function getToken(clientId: string, pinId: string, pinCode: string): Promise<string | null> {
     const plexEndpoint = plexApiURL + '/pins/' + pinId;
     
     try {
