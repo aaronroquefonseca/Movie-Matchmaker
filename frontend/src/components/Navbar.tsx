@@ -2,7 +2,7 @@
 
 export const Navbar = () => {
     return <nav>
-        <h1>🎥 Movie Matchmaker</h1>i
+        <h1>🎥 Movie Matchmaker</h1>
 
         <div>
             <button>
