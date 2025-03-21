@@ -18,7 +18,16 @@ export const Navbar = () => {
 
         if (!hasPlex) {
             plex.getOauth(user.clientId)
-                .then(url => !!url && setPlexOauth(url))
+                .then(oauth => {
+                    if (!!oauth) {
+                        setPlexOauth(oauth.plexOauth)
+                        setUser({
+                            ...user,
+                            plexPinId: oauth.id,
+                            plexPicCode: oauth.code
+                        })
+                    }
+                })
                 .catch((error) => {
                     console.error('Error getting Plex OAuth:', error);
                 }

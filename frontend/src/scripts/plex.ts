@@ -93,12 +93,17 @@ export async function getUser(clientIdentifier: string, userToken: string): Prom
  *  - `''` if the PIN creation fails.  
  * @throws {Error} If an unexpected error occurs during the process.  
  */
-export async function getOauth(clientId: string): Promise<string> {
+
+type oauth = {
+    plexOauth: string,
+    id: string,
+    code: string
+}
+
+export async function getOauth(clientId: string): Promise<oauth|null> {
     try{
         const { id, code } = await createPin(clientId);
         if (id && code) {
-            localStorage.setItem('plexPinId', id);      // TODO: Change this to cookies
-            localStorage.setItem('plexPinCode', code);
             const plexOauth = 'https://app.plex.tv/auth#?' + qs.stringify({
                 clientID: clientId,
                 code: code,
@@ -109,10 +114,14 @@ export async function getOauth(clientId: string): Promise<string> {
                     },
                 },
             });
-            return plexOauth;
+            return  {
+                id,
+                code,
+                plexOauth
+            };
         } else {
             console.error('Error creating Plex pin:', id, code);
-            return '';
+            return null;
         }
     } catch (error) {
         console.error('Error getting Plex OAuth:', error);

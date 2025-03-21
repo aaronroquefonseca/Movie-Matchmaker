@@ -59,6 +59,32 @@ export const App = () => {
         }
 
 
+        let plexPinIdStored = localStorage.getItem("plexPinId");
+
+        if(!plexPinIdStored && !!user.plexPinId){
+            localStorage.setItem("plexPinId", user.plexPinId);
+        }
+
+        if(!user.plexPinId && !!plexPinIdStored){
+            setUser({
+                ...user,
+                plexPinId: plexPinIdStored
+            })
+        }
+
+        let plexPinCodeStored = localStorage.getItem("plexPinCode");
+
+        if(!plexPinCodeStored && !!user.plexPinCode){
+           localStorage.setItem("plexPinCode", user.plexPinCode);
+        }
+
+        if(!user.plexPinCode && !!plexPinCodeStored){
+            setUser({
+                ...user,
+                plexPinCode: plexPinCodeStored
+            })
+        }
+
     }, [user]);
 
     return <UserContext.Provider value={{user, setUser}}>
