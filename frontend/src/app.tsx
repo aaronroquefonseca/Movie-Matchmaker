@@ -28,6 +28,25 @@ export const App = () => {
             ...prevState,
             clientId: storedClientId
         }));
+
+        // Check if plexToken exists in localStorage
+        const storedPlexToken = localStorage.getItem("plexToken");
+
+        if (storedPlexToken) {
+            plex.getUser(storedClientId, storedPlexToken).then((username) => {
+                if (username) {
+                    console.log('Plex user:', username);
+                    setUser(prevState => ({
+                        ...prevState,
+                        plexToken: storedPlexToken
+                    }));
+                } else if (username === '') {
+                    localStorage.removeItem("plexToken");
+                }
+            }).catch((error) => {
+                console.error('Error fetching Plex user:', error);
+            });
+        }
     }, []);
 
     return <UserContext.Provider value={{user, setUser}}>
