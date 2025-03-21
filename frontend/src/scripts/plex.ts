@@ -6,8 +6,12 @@ const product = 'Movie Matchmaker';
 const plexApiURL = 'https://plex.tv/api/v2';
 const webAppUrl = window.location.href;
 
+type pin = {
+    id: string,
+    code: string
+}
 
-async function createPin(clientIdentifier: string) {
+async function createPin(clientIdentifier: string): Promise<pin|null> {
     const plexEndpoint = plexApiURL + '/pins';
   
     try {
@@ -26,10 +30,15 @@ async function createPin(clientIdentifier: string) {
       const { id, code }: any = response.data;
   
       // Return the extracted fields
-      return { id, code };
+      if (!!id && !!code){
+          return { id, code };
+      }
+      console.error('Something went wrong. id:' + id + ', code:' + code);
+      return null;
+
     } catch (error) {
       console.error('Error creating Plex pin:', error);
-      throw error;
+      return null;
     }
 }
 
@@ -61,8 +70,7 @@ export async function getUser(clientIdentifier: string, userToken: string): Prom
       });
   
       if (response.status === 200) {
-        const username = response.data.username || 'User';
-        return username;
+          return response.data.username || 'User';
       }
       console.error('HTTP status code not 200:', response.status);
       return null;
@@ -102,7 +110,11 @@ type oauth = {
 
 export async function getOauth(clientId: string): Promise<oauth|null> {
     try{
-        const { id, code } = await createPin(clientId);
+        const pin = await createPin(clientId);
+        if(!pin) return null;
+
+        const { id, code } = pin;
+
         if (id && code) {
             const plexOauth = 'https://app.plex.tv/auth#?' + qs.stringify({
                 clientID: clientId,
@@ -150,8 +162,7 @@ export async function getToken(clientId: string, pinId: string, pinCode: string)
                 code: pinCode,
             },
         });
-        const authToken = response.data.authToken || null;
-        return authToken;
+        return response.data.authToken || null;
     } catch (error) {
         console.error('Error getting Plex token:', error);
         throw error;
