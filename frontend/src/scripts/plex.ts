@@ -86,6 +86,14 @@ export async function getPlexUser(clientIdentifier: string, userToken: string): 
 }
 
 
+/**
+ * Generates a Plex OAuth URL for user authentication.
+ * 
+ * @returns {Promise<string>} 
+ *  - The OAuth URL if successful.  
+ *  - `''` if the PIN creation fails.  
+ * @throws {Error} If an unexpected error occurs during the process.  
+ */
 export async function getPlexOauth(clientId: string): Promise<string> {
     try{
         const { id, code } = await createPlexPin(clientId);
@@ -111,7 +119,14 @@ export async function getPlexOauth(clientId: string): Promise<string> {
     }
 }
 
-
+/**
+ * Generates a Plex OAuth URL for user authentication.
+ * 
+ * @returns {Promise<string | null>} 
+ *  - The plex token if successful.
+ *  - `null` if the PIN hasn't been authorized yet.
+ * @throws {Error} If an unexpected error occurs during the process.  
+ */
 export async function getPlexToken(clientId: string, pinId: string, pinCode: string): Promise<string | null> {
     const plexEndpoint = plexApiURL + '/pins/' + pinId;
     
@@ -125,8 +140,8 @@ export async function getPlexToken(clientId: string, pinId: string, pinCode: str
                 code: pinCode,
             },
         });
-
-        return response.data
+        const authToken = response.data.authToken || null;
+        return authToken;
     } catch (error) {
         console.error('Error getting Plex token:', error);
         throw error;
