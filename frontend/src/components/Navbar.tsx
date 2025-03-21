@@ -4,7 +4,7 @@ import * as plex from "../scripts/plex.ts";
 
 export const Navbar = () => {
 
-    const {user, setUser} = useContext(UserContext);
+    const {user} = useContext(UserContext);
     const [hasPlex, setHasPlex] = useState<boolean>(!!user.plexToken);
     const [hasJellyfin, setHasJellyfin] = useState<boolean>(!!user.jellyfinKey);
     const [plexOauth, setPlexOauth] = useState<string>('');
@@ -17,11 +17,12 @@ export const Navbar = () => {
         }
 
         if (!hasPlex) {
-            plex.getOauth(user.clientId || '').then((url) => { // TODO: Fix this, get from user type and never request with ''
-                setPlexOauth(url);
-            }).catch((error) => {
-                console.error('Error getting Plex OAuth:', error);
-            });
+            plex.getOauth(user.clientId)
+                .then(url => !!url && setPlexOauth(url))
+                .catch((error) => {
+                    console.error('Error getting Plex OAuth:', error);
+                }
+            );
         }
         
     }, [user]);

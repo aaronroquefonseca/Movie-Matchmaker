@@ -11,7 +11,7 @@ export const UserContext = createContext<any>(null);
 
 export const App = () => {
     const [user, setUser] = useState<User>({
-        clientId: uuidv4()
+        clientId: localStorage.getItem("clientId") ?? uuidv4()
     });
 
     useEffect(() => {
@@ -35,6 +35,7 @@ export const App = () => {
         }
     }, []);
 
+    // LOCAL STORAGE MANAGEMENT
     useEffect(() => {
         let clientIdStored = localStorage.getItem("clientId");
 

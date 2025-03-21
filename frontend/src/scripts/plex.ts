@@ -51,7 +51,7 @@ export async function getUser(clientIdentifier: string, userToken: string): Prom
     const plexEndpoint = plexApiURL + '/user';
   
     try {
-      const response = await axios.get(plexEndpoint, {
+      const response:any = await axios.get(plexEndpoint, {
         headers: {
           'Accept': 'application/json',
           'X-Plex-Product': product,  // Your app name
@@ -132,7 +132,7 @@ export async function getToken(clientId: string, pinId: string, pinCode: string)
     const plexEndpoint = plexApiURL + '/pins/' + pinId;
     
     try {
-        const response = await axios.get(plexEndpoint, {
+        const response:any = await axios.get(plexEndpoint, {
             headers: {
                 'Accept': 'application/json',
                 'X-Plex-Client-Identifier': clientId,
