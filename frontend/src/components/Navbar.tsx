@@ -1,16 +1,36 @@
-import {useEffect, useState} from "preact/hooks";
+import {useEffect, useState, useContext} from "preact/hooks";
+import { UserContext } from "../app.tsx";
+import * as plex from "../scripts/plex.ts";
 
 export const Navbar = () => {
 
+    const {user, setUser} = useContext(UserContext);
     const [hasPlex, setHasPlex] = useState<boolean>(false);
     const [hasJellyfin, setHasJellyfin] = useState<boolean>(false);
+    const [plexOauth, setPlexOauth] = useState<string>('');
 
     useEffect(() => {
-    })
+        if (user?.plexToken && user?.plexToken !== '') {
+            setHasPlex(true);
+        } else {
+            setHasPlex(false);
+        }
+
+        if (!hasPlex) {
+            plex.getOauth(user.clientId).then((url) => {
+                setPlexOauth(url);
+            }).catch((error) => {
+                console.error('Error getting Plex OAuth:', error);
+            });
+        }
+        
+    }, [user]);
 
 
     const logoutPlex = () => {
         setHasPlex(false);
+        localStorage.removeItem("plexToken");
+        user.plexToken = '';
     }
 
     const logoutJellyfin = () => {
@@ -25,7 +45,7 @@ export const Navbar = () => {
                {hasPlex ?
                    <button onClick={logoutPlex}>Log out Plex</button>
                    :
-                   <button>Log in Plex</button>
+                   <button onClick={() => window.location.href = plexOauth}>Log in Plex</button>
                }
                {hasJellyfin ?
                    <button onClick={logoutJellyfin}>Log out Jellyfin</button>

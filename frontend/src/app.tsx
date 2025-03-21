@@ -7,7 +7,7 @@ import * as plex from "./scripts/plex.ts";
 
 import { v4 as uuidv4 } from "uuid";
 
-const UserContext = createContext<any>(null);
+export const UserContext = createContext<any>(null);
 
 export const App = () => {
     const [user, setUser] = useState<User>({
