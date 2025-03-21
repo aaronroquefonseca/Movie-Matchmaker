@@ -4,7 +4,7 @@ import * as plex from "../scripts/plex.ts";
 
 export const Navbar = () => {
 
-    const {user} = useContext(UserContext);
+    const {user, setUser} = useContext(UserContext);
     const [hasPlex, setHasPlex] = useState<boolean>(!!user.plexToken);
     const [hasJellyfin, setHasJellyfin] = useState<boolean>(!!user.jellyfinKey);
     const [plexOauth, setPlexOauth] = useState<string>('');
@@ -27,10 +27,18 @@ export const Navbar = () => {
         
     }, [user]);
 
+    const loginPlex = async () => {
+        window.location.href = plexOauth;
+
+
+    }
 
     const logoutPlex = () => {
         setHasPlex(false);
-        user.plexToken = undefined;
+        setUser({
+            ...user,
+            plexToken: undefined
+        })
     }
 
     const logoutJellyfin = () => {
@@ -45,7 +53,7 @@ export const Navbar = () => {
                {hasPlex ?
                    <button onClick={logoutPlex}>Log out Plex</button>
                    :
-                   <button onClick={() => window.location.href = plexOauth}>Log in Plex</button>
+                   <button onClick={loginPlex}>Log in Plex</button>
                }
                {hasJellyfin ?
                    <button onClick={logoutJellyfin}>Log out Jellyfin</button>
